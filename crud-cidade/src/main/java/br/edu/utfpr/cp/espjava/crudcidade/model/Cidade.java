@@ -1,9 +1,13 @@
 package br.edu.utfpr.cp.espjava.crudcidade.model;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public final class Cidade {
+@Entity(name = "cidade")
+public final class Cidade extends AbstractPersistable<Long> {
 
     @NotBlank(message = "{app.cidade.blank}")
     @Size(min = 5, max = 60,  message = "{app.cidade.size}")
@@ -13,9 +17,16 @@ public final class Cidade {
     @Size(min = 2, max = 2, message = "{app.estado.size}")
     private String estado;
 
+    public Cidade() {}
+
     public Cidade(final String nome, final String estado) {
         this.nome = nome;
         this.estado = estado;
+    }
+
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
     }
 
     public String getNome() {
