@@ -1,18 +1,17 @@
 package br.edu.utfpr.cp.espjava.crudcidade.controller;
 
-import br.edu.utfpr.cp.espjava.crudcidade.model.Cidade;
+import br.edu.utfpr.cp.espjava.crudcidade.converter.CidadeConverter;
+import br.edu.utfpr.cp.espjava.crudcidade.dto.CidadeDTO;
+import br.edu.utfpr.cp.espjava.crudcidade.model.CidadeDAO;
 import br.edu.utfpr.cp.espjava.crudcidade.service.CidadeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 public class CidadeController {
@@ -31,7 +30,7 @@ public class CidadeController {
     }
 
     @PostMapping("/criar")
-    public String criar(@Valid Cidade cidade, BindingResult bindingResult, Model model) {
+    public String criar(@Valid CidadeDTO cidade, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             bindingResult
@@ -47,7 +46,7 @@ public class CidadeController {
             return "/crud";
         } else {
 
-            cidadeService.salvarCidade(new Cidade(cidade.getNome(), cidade.getEstado()));
+            cidadeService.salvarCidade(cidade);
         }
 
         return "redirect:/";
@@ -65,9 +64,9 @@ public class CidadeController {
 
         var cidadeAtual = cidadeService.buscarCidadeByNomeAndEstado(nome, estado);
 
-        if (cidadeAtual.isPresent()) {
+        if (cidadeAtual != null) {
 
-            model.addAttribute("cidadeAtual", cidadeAtual.get());
+            model.addAttribute("cidadeAtual", cidadeAtual);
             model.addAttribute("cidadeList", cidadeService.buscarTodasCidades());
         }
 
@@ -75,13 +74,13 @@ public class CidadeController {
     }
 
     @PostMapping("/alterar")
-    public String alterar(@RequestParam String nomeAtual, @RequestParam String estadoAtual, Cidade cidade, BindingResult bindingResult, Model model) {
+    public String alterar(@RequestParam String nomeAtual, @RequestParam String estadoAtual, CidadeDTO cidade, BindingResult bindingResult, Model model) {
 
         var cidadeAtual = cidadeService.buscarCidadeByNomeAndEstado(nomeAtual, estadoAtual);
 
-        if (cidadeAtual.isPresent()) {
+        if (cidadeAtual != null ) {
 
-            var cidadeEncontrada = cidadeAtual.get();
+            var cidadeEncontrada = cidadeAtual;
             cidadeEncontrada.setNome(cidade.getNome());
             cidadeEncontrada.setEstado(cidade.getEstado());
 

@@ -1,6 +1,8 @@
 package br.edu.utfpr.cp.espjava.crudcidade.service;
 
-import br.edu.utfpr.cp.espjava.crudcidade.model.Cidade;
+import br.edu.utfpr.cp.espjava.crudcidade.converter.CidadeConverter;
+import br.edu.utfpr.cp.espjava.crudcidade.dto.CidadeDTO;
+import br.edu.utfpr.cp.espjava.crudcidade.model.CidadeDAO;
 import br.edu.utfpr.cp.espjava.crudcidade.repository.CidadeRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +18,31 @@ public class CidadeService {
         this.cidadeRepository = cidadeRepository;
     }
 
-    public void salvarCidade(final Cidade cidade) {
-        cidadeRepository.saveAndFlush(cidade);
+    public void salvarCidade(final CidadeDTO cidade) {
+
+        cidadeRepository.saveAndFlush(CidadeConverter.converterCidadeDTO(cidade));
     }
 
     public void deletarCidade(final String nome, final String estado) {
 
-        var cidadeOpt = buscarCidadeByNomeAndEstado(nome, estado);
+        var cidadeOpt = cidadeRepository.findByNomeAndEstado(nome, estado);
         cidadeOpt.ifPresent(cidadeRepository::delete);
     }
 
-    public Optional<Cidade> buscarCidadeByNomeAndEstado(final String nome, final String estado) {
+    public CidadeDTO buscarCidadeByNomeAndEstado(final String nome, final String estado) {
 
-        return cidadeRepository.findByNomeAndEstado(nome, estado);
+        Optional<CidadeDAO> cidadeDAO = cidadeRepository.findByNomeAndEstado(nome, estado);
+
+        if (cidadeDAO.isPresent()) {
+            return CidadeConverter.converterCidadeDAO(cidadeDAO.get());
+        }
+
+        return null;
     }
 
-    public List<Cidade> buscarTodasCidades() {
-        return cidadeRepository.findAll();
+    public List<CidadeDTO> buscarTodasCidades() {
+
+        return CidadeConverter.mapAll(cidadeRepository.findAll(), CidadeDTO.class);
     }
 
 }
