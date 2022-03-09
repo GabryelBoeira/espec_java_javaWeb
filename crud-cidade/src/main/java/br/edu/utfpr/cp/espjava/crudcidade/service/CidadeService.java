@@ -13,14 +13,16 @@ import java.util.Optional;
 public class CidadeService {
 
     private CidadeRepository cidadeRepository;
+    private CidadeConverter cidadeConverter;
 
-    public CidadeService(final CidadeRepository cidadeRepository) {
+    public CidadeService(CidadeRepository cidadeRepository, CidadeConverter cidadeConverter) {
         this.cidadeRepository = cidadeRepository;
+        this.cidadeConverter = cidadeConverter;
     }
 
-    public void salvarCidade(final CidadeDTO cidade) {
+    public void salvarCidade(final CidadeDTO cidadeDTO) {
 
-        cidadeRepository.saveAndFlush(CidadeConverter.converterCidadeDTO(cidade));
+        cidadeRepository.saveAndFlush(cidadeConverter.convertFromDto(cidadeDTO));
     }
 
     public void deletarCidade(final String nome, final String estado) {
@@ -34,7 +36,7 @@ public class CidadeService {
         Optional<CidadeDAO> cidadeDAO = cidadeRepository.findByNomeAndEstado(nome, estado);
 
         if (cidadeDAO.isPresent()) {
-            return CidadeConverter.converterCidadeDAO(cidadeDAO.get());
+            return cidadeConverter.convertFromEntity(cidadeDAO.get());
         }
 
         return null;
@@ -42,7 +44,7 @@ public class CidadeService {
 
     public List<CidadeDTO> buscarTodasCidades() {
 
-        return CidadeConverter.mapAll(cidadeRepository.findAll(), CidadeDTO.class);
+        return cidadeConverter.createFromEntities(cidadeRepository.findAll());
     }
 
 }

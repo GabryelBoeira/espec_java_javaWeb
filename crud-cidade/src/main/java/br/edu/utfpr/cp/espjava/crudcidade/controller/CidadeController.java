@@ -1,8 +1,6 @@
 package br.edu.utfpr.cp.espjava.crudcidade.controller;
 
-import br.edu.utfpr.cp.espjava.crudcidade.converter.CidadeConverter;
 import br.edu.utfpr.cp.espjava.crudcidade.dto.CidadeDTO;
-import br.edu.utfpr.cp.espjava.crudcidade.model.CidadeDAO;
 import br.edu.utfpr.cp.espjava.crudcidade.service.CidadeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,23 +28,23 @@ public class CidadeController {
     }
 
     @PostMapping("/criar")
-    public String criar(@Valid CidadeDTO cidade, BindingResult bindingResult, Model model) {
+    public String criar(@Valid CidadeDTO cidadeDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             bindingResult
                     .getFieldErrors()
                     .forEach(
                             error -> model.addAttribute(error.getField(), error.getDefaultMessage())
-                );
+                    );
 
-            model.addAttribute("nomeInformado", cidade.getNome());
-            model.addAttribute("estadoInformado", cidade.getEstado());
-            model.addAttribute("listaCidades", cidadeService.buscarTodasCidades());
+            model.addAttribute("nomeInformado", cidadeDTO.getNome());
+            model.addAttribute("estadoInformado", cidadeDTO.getEstado());
+            model.addAttribute("cidadeList", cidadeService.buscarTodasCidades());
 
             return "/crud";
         } else {
 
-            cidadeService.salvarCidade(cidade);
+            cidadeService.salvarCidade(cidadeDTO);
         }
 
         return "redirect:/";
@@ -78,7 +76,7 @@ public class CidadeController {
 
         var cidadeAtual = cidadeService.buscarCidadeByNomeAndEstado(nomeAtual, estadoAtual);
 
-        if (cidadeAtual != null ) {
+        if (cidadeAtual != null) {
 
             var cidadeEncontrada = cidadeAtual;
             cidadeEncontrada.setNome(cidade.getNome());

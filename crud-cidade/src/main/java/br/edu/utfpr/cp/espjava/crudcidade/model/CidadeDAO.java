@@ -10,12 +10,12 @@ import javax.validation.constraints.Size;
 @Entity(name = "cidade")
 public final class CidadeDAO extends AbstractPersistable<Long> {
 
-    @NotBlank(message = "{app.cidade.blank}")
-    @Size(min = 5, max = 60,  message = "{app.cidade.size}")
+    @NotBlank
+    @Size(min = 5, max = 60)
     private String nome;
 
-    @NotBlank(message = "{app.estado.blank}")
-    @Size(min = 2, max = 2, message = "{app.estado.size}")
+    @NotBlank
+    @Size(min = 2, max = 2)
     private String estado;
 
     public CidadeDAO() {}
