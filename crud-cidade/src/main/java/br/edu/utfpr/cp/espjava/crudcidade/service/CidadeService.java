@@ -2,7 +2,7 @@ package br.edu.utfpr.cp.espjava.crudcidade.service;
 
 import br.edu.utfpr.cp.espjava.crudcidade.converter.CidadeConverter;
 import br.edu.utfpr.cp.espjava.crudcidade.dto.CidadeDTO;
-import br.edu.utfpr.cp.espjava.crudcidade.model.CidadeDAO;
+import br.edu.utfpr.cp.espjava.crudcidade.model.Cidade;
 import br.edu.utfpr.cp.espjava.crudcidade.repository.CidadeRepository;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class CidadeService {
 
     public CidadeDTO buscarCidadeByNomeAndEstado(final String nome, final String estado) {
 
-        Optional<CidadeDAO> cidadeDAO = cidadeRepository.findByNomeAndEstado(nome, estado);
+        Optional<Cidade> cidadeDAO = cidadeRepository.findByNomeAndEstado(nome, estado);
 
         if (cidadeDAO.isPresent()) {
             return cidadeConverter.convertFromEntity(cidadeDAO.get());

@@ -1,6 +1,5 @@
 package br.edu.utfpr.cp.espjava.crudcidade.model;
 
-import br.edu.utfpr.cp.espjava.crudcidade.dto.CidadeDTO;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
@@ -8,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity(name = "cidade")
-public final class CidadeDAO extends AbstractPersistable<Long> {
+public final class Cidade extends AbstractPersistable<Long> {
 
     @NotBlank
     @Size(min = 5, max = 60)
@@ -18,9 +17,9 @@ public final class CidadeDAO extends AbstractPersistable<Long> {
     @Size(min = 2, max = 2)
     private String estado;
 
-    public CidadeDAO() {}
+    public Cidade() {}
 
-    public CidadeDAO(final String nome, final String estado) {
+    public Cidade(final String nome, final String estado) {
         this.nome = nome;
         this.estado = estado;
     }
