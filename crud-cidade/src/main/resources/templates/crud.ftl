@@ -10,7 +10,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 </head>
 <body>
+    <nav class="navbar navbar-expand-sm bg-dark">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a href="/logout" class="nav-link btn btn-secondary">Sair da aplicação</a>
+            </li>
+        </ul>
+    </nav>
+
     <div class="container-fluid">
+
         <div class="jumbotron mt-5">
             <h1>GERENCIAMENTO DE CIDADES</h1>
             <p>UM CRUD PARA CRIAR, ALTERAR, EXCLUIR E LISTAR CIDADES</p>
@@ -67,6 +76,7 @@
                 </#list>
             </tbody>
         </table>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
