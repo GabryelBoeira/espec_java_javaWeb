@@ -2,7 +2,7 @@ package br.edu.utfpr.cp.espjava.crudcidade.converter;
 
 import br.edu.utfpr.cp.espjava.crudcidade.dto.CidadeDTO;
 import br.edu.utfpr.cp.espjava.crudcidade.model.CidadeDAO;
-import br.edu.utfpr.cp.espjava.crudcidade.util.ConverterGeneric;
+import br.edu.utfpr.cp.espjava.crudcidade.configuration.ConverterGeneric;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,4 +1,4 @@
-package br.edu.utfpr.cp.espjava.crudcidade.util;
+package br.edu.utfpr.cp.espjava.crudcidade.configuration;
 
 import java.util.Collection;
 import java.util.List;
