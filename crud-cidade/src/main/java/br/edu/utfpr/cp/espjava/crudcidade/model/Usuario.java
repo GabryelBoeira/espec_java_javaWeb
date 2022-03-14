@@ -5,17 +5,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity(name = "usuario")
-public class Usuario extends AbstractPersistable<Long> implements Serializable, UserDetails {
+public class Usuario extends AbstractPersistable<Long> implements UserDetails {
 
     private String nome;
     private String senha;

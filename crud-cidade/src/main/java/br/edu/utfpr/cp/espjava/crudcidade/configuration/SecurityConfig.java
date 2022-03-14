@@ -1,11 +1,10 @@
 package br.edu.utfpr.cp.espjava.crudcidade.configuration;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,18 +25,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/excluir").hasAuthority("admin")
                 .antMatchers("/preparaAlterar").hasAuthority("admin")
                 .antMatchers("/alterar").hasAuthority("admin")
-                .antMatchers("/h2-console").hasAuthority("admin")
+                .antMatchers("/mostrar").authenticated()
                 .anyRequest().denyAll()
                 .and()
                 .formLogin()
                 .loginPage("/login.html").permitAll()
+                .defaultSuccessUrl("/", false)
                 .and()
                 .logout().permitAll();
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void printSenhas() {
-        System.out.println(this.cifrador().encode("123"));
+    @EventListener(InteractiveAuthenticationSuccessEvent.class)
+    public void printUsuarioAtual(InteractiveAuthenticationSuccessEvent event) {
+
+        var usuario= event.getAuthentication().getName();
+        System.out.println(usuario);
     }
 
     @Bean

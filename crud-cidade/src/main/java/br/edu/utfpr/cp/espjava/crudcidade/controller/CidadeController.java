@@ -5,11 +5,15 @@ import br.edu.utfpr.cp.espjava.crudcidade.service.CidadeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Controller
 public class CidadeController {
@@ -21,14 +25,19 @@ public class CidadeController {
     }
 
     @GetMapping("/")
-    public String listar(Model model) {
+    public String listar(Model model, Principal usuario, HttpSession session, HttpServletResponse response) {
 
+        response.addCookie(new Cookie("listar", LocalDateTime.now().toString()));
         model.addAttribute("cidadeList", cidadeService.buscarTodasCidades());
+        session.setAttribute("usuarioAtual", usuario.getName());
+
         return "/crud";
     }
 
     @PostMapping("/criar")
-    public String criar(@Valid CidadeDTO cidadeDTO, BindingResult bindingResult, Model model) {
+    public String criar(@Valid CidadeDTO cidadeDTO, BindingResult bindingResult, Model model, HttpServletResponse response) {
+
+        response.addCookie(new Cookie("criar", LocalDateTime.now().toString()));
 
         if (bindingResult.hasErrors()) {
             bindingResult
@@ -51,8 +60,9 @@ public class CidadeController {
     }
 
     @GetMapping("/excluir")
-    public String excluir(@RequestParam String nome, @RequestParam String estado) {
+    public String excluir(@RequestParam String nome, @RequestParam String estado, HttpServletResponse response) {
 
+        response.addCookie(new Cookie("excluir", LocalDateTime.now().toString()));
         cidadeService.deletarCidade(nome, estado);
         return "redirect:/";
     }
@@ -72,8 +82,9 @@ public class CidadeController {
     }
 
     @PostMapping("/alterar")
-    public String alterar(@RequestParam String nomeAtual, @RequestParam String estadoAtual, CidadeDTO cidade, BindingResult bindingResult, Model model) {
+    public String alterar(@RequestParam String nomeAtual, @RequestParam String estadoAtual, CidadeDTO cidade, BindingResult bindingResult, Model model, HttpServletResponse response) {
 
+        response.addCookie(new Cookie("alterar", LocalDateTime.now().toString()));
         var cidadeAtual = cidadeService.buscarCidadeByNomeAndEstado(nomeAtual, estadoAtual);
 
         if (cidadeAtual != null) {
@@ -86,5 +97,12 @@ public class CidadeController {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/mostrar")
+    @ResponseBody
+    public String mostrarCookieAlterar(@CookieValue String listar) {
+
+        return "Último acesso ao método listar(): " + listar;
     }
 }
