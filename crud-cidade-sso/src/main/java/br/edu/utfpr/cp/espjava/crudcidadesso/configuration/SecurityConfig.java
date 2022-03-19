@@ -8,8 +8,12 @@ import org.springframework.security.authentication.event.InteractiveAuthenticati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/mostrar").authenticated()
                 .anyRequest().denyAll()
                 .and()
-                .oauth2Login().permitAll();
+                .oauth2Login().userInfoEndpoint().userAuthoritiesMapper(userAuthoritiesMapper());
     }
 
+    @Bean
+    public GrantedAuthoritiesMapper userAuthoritiesMapper() {
+        return (authorities) -> Set.of(new SimpleGrantedAuthority("admin"));
+    }
 }
