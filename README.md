@@ -20,3 +20,6 @@ Além do Java e Spring Boot, outras tecnologias que são usadas na disciplina s�
 ### Conteúdo :
 
 - [CRUD-Cidades](https://github.com/GabryelBoeira/espec_java_javaWeb/tree/main/crud-cidade) : Projeto inicial para inicialização e interação basicas com o Spring com o CRUD em uma aplicação web.
+
+
+\*\* Esta é uma Disciplina Concluida \*\*
